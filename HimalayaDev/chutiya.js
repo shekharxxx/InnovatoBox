@@ -1,1 +1,0 @@
-reactJS chutiya hai
