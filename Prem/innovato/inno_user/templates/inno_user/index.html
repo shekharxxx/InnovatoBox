@@ -1,0 +1,165 @@
+<!doctyoe html>
+<html>
+    {% load static %}
+  <head>
+    <title>Innovato Register</title>
+	
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	
+	<style type="text/css">
+	
+	.login-box
+	{
+		height:80%;
+		width:35%;  
+		border-radius:10px; 
+		position:absolute; 
+		left:50%;
+		top:43%;
+	}
+	
+	.header
+	{
+		height:22%;
+		width:100%; 
+		border-radius:10px 10px 0px 0px;  
+		position:absolute; 
+		right:50%; 
+		top:-47%; 
+		background:rgba(222, 231, 219, 0.822);
+	}
+	.header-contain
+	{
+		font-size:2.5em;color:rgb(6, 175, 218); font-family:cursive;
+	    position:relative;top:70px;
+	}
+	.container{
+	
+		    position:absolute;
+			top:-145px; 
+			right:50%;
+			height: 90%;
+			width: 100%;
+			background:rgba(222, 231, 219, 0.822)  ;
+			border-radius: 0px 0px 10px 10px;
+			
+			 
+		}
+		.smtbtn{
+			height: 40px;
+			width: 80%;
+			margin-left: 10%;
+			background-color:#069fdb;	;							
+			color: #fff;
+			border: none;
+			font-size:20px;	
+			border-radius:10px;
+		}
+		.input{
+			height:35px;
+			width: 75%;
+			overflow:hidden;
+			padding-left:40px;
+			margin-bottom:18px;
+			margin-left: 12%;
+			background-color:rgba(0,0,0,0) ;
+			outline:none;
+			border: none;
+			border-bottom: 1px solid skyblue;
+			
+		}
+	
+		i{
+			position: absolute;
+			left: 12%;
+			
+			height: 10px;
+			padding: 14px;
+		
+			border-radius:10px 0px 0px 10px;
+		}
+		.i1{
+	       margin-left:72px; margin-top:2%;
+		   
+		}
+		.i3{text-decoration:none;color:rgba(219, 40, 40, 0.842);margin-left:0px;}
+		
+		.i8{margin-left:23%; position:absolute;left:5%; bottom:-5px;}
+		
+		.i4{margin-left:55%; text-decoration:solid ;color:red;
+		   position:absolute;margin-top:25px;
+			
+		}
+		.i4:visited{color:green;}.i4:hover{color:blue;border-bottom:1px solid;}
+	    
+		.line{
+			border:2px dotted red;
+		}
+
+		body{
+		background:url({% static '/inno_user/bgm.jpg/'%});
+		background-size:100% 100%;
+		}
+		::placeholder{
+		font-weight:500;
+		font-family: cursive;
+		color: rgb(40, 185, 137);
+		}
+		
+		 
+		
+	</style>
+  </head>
+  <body>
+	  {% for msg in messages %}
+	  <div class="alert alert-{{ msg.tags }} alert-dismissible fade show w-25 float-left" role="alert">
+		<strong>MESSAGE :</strong> {{ msg }}
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	  </div>
+	  {% endfor %}
+
+      
+      <div class="login-box"> 
+	  
+	  <div class="header">
+	    <center> <h2 class="header-contain">Innovato Register</h2> </center>
+	  </div>
+	   
+	     <div class="container"><br><br>
+	  
+	    <form action ="/inno_user/" method="post">
+		{% csrf_token %}
+	   
+		<input type="text" name="username" placeholder="Username" class="input" required >
+			<input type="text" name="fname" placeholder="Firstname" class="input" required>
+				<input type="text" name="lname" placeholder="Lastname" class="input" required>
+					<input type="password" name="pass" placeholder="Password" class="input" id="ip" required>
+						<input type="password" name="rpass" placeholder="Password Again" class="input" id="ip1" required>
+					<input type="email" name="email" placeholder="Email" class="input" required >
+				<br><input type="checkbox" name="" class="i1" required> &nbsp I agree  
+			<a href ="#" class="i3">Terms of Services</a>
+				<input type="checkbox" onclick="myFunction()"> Show Password
+		<br><br>
+			<input type="submit" name="" value ="Sign up"class="smtbtn">
+				<br>
+	    			<p class="i8">Already a memeber?</p>
+						<a href ="/inno_user/login/" class="i4">Login Here</a></form>
+	   
+	</div>  
+	 </div>
+	          
+  </body>
+  <script>
+	function myFunction() {
+		  var x = document.getElementById("ip");
+		  if (x.type === "password") {
+				x.type = "text";
+		  }
+		else{
+			x.type = "password";
+			}}
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+</html>
+
