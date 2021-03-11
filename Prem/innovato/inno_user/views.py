@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Video_up,Comment
+from .models import Video_up,Comment,like
 # Create your views here.
 def index(request):
     # registration page
@@ -33,6 +33,7 @@ def index(request):
         return render(request, "inno_user/index.html") 
 
 def signin(request):
+    #login page logic
     if request.method == 'POST':
         uname = request.POST.get('uname','')
         password = request.POST.get("password",'')
@@ -40,7 +41,7 @@ def signin(request):
         luser = authenticate(username=uname, password=password)
         if luser is not None:
             login(request,luser)
-            messages.success(request, " is successfully loged in")
+            messages.success(request, f" {uname} is successfully loged in")
             return redirect('/inno_user/dashbord/')
         else:
             messages.warning(request,"invalid user")
@@ -52,15 +53,24 @@ def signin(request):
 def dashbord(request):
     v = Video_up.objects.all()
     c1 = Comment.objects.all()
-    # list1 = []
-    # list2 = []
-    # for i in v:
-    #     print(i.v_id)
-    #     for j in c1:
-    #         if i.v_id==j.cmt_vid:
-    #             print("hi")
+    l = like.objects.all()
+  
+    ll = set()
+    dic2 = {}
+    for k in l:
+        dic2[k.l_postid] = k.l_user
+    for j in l:
+        ll.add(j.l_postid)
+        
+    # total likes logic
+    dic1 = dict()
+    for i in l:
+        dic1[i.l_postid] = dic1.get(i.l_postid, 0) + 1
+
+    print(dic1)
+    print(dic2)
     l1 = v[::-1]
-    return render(request,"inno_user/dashbord.html", { 'video' : l1, 'cmt' : c1})
+    return render(request,"inno_user/dashbord.html", { 'video' : l1, 'cmt' : c1, 'll' : ll,'dic2':dic2, 'dic1' : dic1, })
     
 def signout(request):
     logout(request)
@@ -89,5 +99,37 @@ def cmt_upld(request):
         cmt = request.POST.get('comment', '')
 
         com = Comment(cmt_user=c_user, cmt_vid=c_postid, cmt_msg=cmt)
+        if cmt.isspace():
+            messages.warning(request,"please no null comment")
+            return redirect('/inno_user/dashbord/')
         com.save()
         return redirect('/inno_user/dashbord/')
+
+
+def like_l(request):
+    if request.method == "POST":
+        l_user = request.POST.get('l_user','')
+        l_postid = request.POST.get('l_postid','')
+
+        li = like(l_user=l_user, l_postid=l_postid)        
+        li.save()
+
+        return redirect('/inno_user/dashbord/')
+    else:
+        return render(request,"/inno_user/dashbord/")
+
+# llid = ''
+def unlike(request, msg):
+    ul = like.objects.all()
+    l1 = msg.split()
+    d = dict()
+    myid = ' '
+    
+    for i in ul:
+        d[i.l_user] = i.l_postid
+        if i.l_user == str(l1[1]) and i.l_postid == int(l1[0]):
+            myid = i.l_id
+    print("my dict :",d)
+    ll = like.objects.filter(l_id=myid)
+    ll.delete()
+    return redirect("/inno_user/dashbord/")
